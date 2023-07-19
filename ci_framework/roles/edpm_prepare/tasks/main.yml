@@ -145,6 +145,7 @@
       ansible.builtin.include_role:
         name: edpm_kustomize
 
+
     - name: Apply the OpenStackControlPlane CR
       environment:
         KUBECONFIG: "{{ cifmw_openshift_kubeconfig }}"
@@ -153,6 +154,12 @@
       ci_script:
         output_dir: "{{ cifmw_edpm_prepare_basedir }}/artifacts"
         script: "oc apply -f {{ cifmw_edpm_prepare_openstack_cr_manifest_paths.files[0].path }}"
+
+    - name: Override openstack service images
+      when:
+      - cifmw_openstack_svc_image is defined
+      ansible.builtin.include_role:
+        name: override_op_image
 
     - name: Wait for OpenStack controlplane to be deployed
       environment:
