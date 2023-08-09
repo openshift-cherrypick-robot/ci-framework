@@ -16,7 +16,7 @@
 
 - name: Ensure directory is present
   ansible.builtin.file:
-    path: "{{ cifmw_env_op_images_dir }}"
+    path: "{{ cifmw_env_op_images_dir }}/{{ item }}"
     state: directory
   loop:
     - artifacts
@@ -33,7 +33,7 @@
 - name: Get openstack operator images
   when:
     - cifmw_openshift_kubeconfig is defined
-    - openstack_installed.stdout | bool
+    - openstack_installed.stdout == "True"
   environment:
     KUBECONFIG: "{{ cifmw_openshift_kubeconfig }}"
     PATH: "{{ cifmw_path }}"
@@ -58,7 +58,7 @@
         script: |
           pod_name=$(oc get pods -l openstack.org/operator-name=openstack --no-headers=true -n {{ cifmw_install_yamls_defaults['OPERATOR_NAMESPACE'] }} | awk '{print $1}' );
           image=$(oc get pod ${pod_name} -n {{ cifmw_install_yamls_defaults['OPERATOR_NAMESPACE'] }} -o jsonpath='{.status.containerStatuses[1].imageID}');
-          echo "  OPENSTACK_OP_IMG: ${image}" >> "{{ cifmw_env_op_images_dir }}/artifacts/{{ cifmw_env_op_images_file  }}"
+          echo -e "\ncifmw_openstack_operator_image:\n  OPENSTACK_OP_IMG: ${image}" >> "{{ cifmw_env_op_images_dir }}/artifacts/{{ cifmw_env_op_images_file  }}"
 
     - name: Get Rabbitmq-operator image
       ci_script:

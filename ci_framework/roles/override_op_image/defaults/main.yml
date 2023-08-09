@@ -18,4 +18,4 @@
 # All variables intended for modification should be placed in this file.
 # All variables within this role should have a prefix of "cifmw_override_op_image"
 
-cifmw_override_op_image_dir: "{{ cifmw_basedir | default(ansible_user_dir ~ '/ci-framework-data') }}/artifacts/manifests/openstack"
+cifmw_override_op_image_dir: "{{ cifmw_basedir | default(ansible_user_dir ~ '/ci-framework-data') }}"

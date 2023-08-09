@@ -16,7 +16,7 @@
 
 - name: Ensure directory exists
   ansible.builtin.file:
-    path: "{{ cifmw_basedir | default(ansible_user_dir ~ '/ci-framework-data') }}/{{item}}"
+    path: "{{ cifmw_override_op_image_dir }}/{{ item }}"
     state: directory
   loop:
     - artifacts/manifests/openstack
@@ -32,21 +32,21 @@
   block:
     - name: Dump OpenStackControlPlane CR into a file
       ci_script:
-        output_dir: "{{cifmw_override_op_image_dir}}"
+        output_dir: "{{ cifmw_override_op_image_dir }}/artifacts/manifests/openstack"
         script: |
           cp_name=$(oc get OpenStackControlPlane -n {{ cifmw_install_yamls_defaults['NAMESPACE'] }} --no-headers=true | awk '{print $1}')
-          oc get OpenStackControlPlane { cp_name } -n {{ cifmw_install_yamls_defaults['NAMESPACE'] }} -o yaml > {{ cifmw_override_op_image_dir }}/osp_cp_cr.yaml
+          oc get OpenStackControlPlane { cp_name } -n {{ cifmw_install_yamls_defaults['NAMESPACE'] }} -o yaml > {{ cifmw_override_op_image_dir }}/artifacts/manifests/openstack/osp_cp_cr.yaml
 
     - name: Replace openstack service images in the yaml file
       with_dict: "{{cifmw_openstack_svc_image}}"
       ansible.builtin.replace:
-        path: "{{cifmw_override_op_image_dir}}/osp_cp_cr.yaml"
+        path: "{{ cifmw_override_op_image_dir }}/artifacts/manifests/openstack/osp_cp_cr.yaml"
         regexp: "{{ item.key }}\\[[^\\]]+\\]"
         replace: "{{ item.key}}{{item.value}}"
 
     - name: Apply the changes to OpenStackControlPlane CR
       ci_script:
-        output_dir: "{{cifmw_override_op_image_dir}}"
+        output_dir: "{{ cifmw_override_op_image_dir }}/artifacts/manifests/openstack"
         script: |
-          sed '/resourceVersion/d' {{cifmw_override_op_image_dir}}/osp_cp_cr.yaml > {{cifmw_override_op_image_dir}}/osp_cp_cr.yaml
+          sed -i '/resourceVersion/d' {{cifmw_override_op_image_dir}}/artifacts/manifests/openstack/osp_cp_cr.yaml
           oc replace -f {{cifmw_override_op_image_dir}}/osp_cp_cr.yaml
