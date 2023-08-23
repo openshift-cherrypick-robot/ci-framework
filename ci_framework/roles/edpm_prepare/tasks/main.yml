@@ -145,7 +145,6 @@
       ansible.builtin.include_role:
         name: edpm_kustomize
 
-
     - name: Apply the OpenStackControlPlane CR
       environment:
         KUBECONFIG: "{{ cifmw_openshift_kubeconfig }}"
