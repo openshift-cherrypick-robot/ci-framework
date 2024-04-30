@@ -20,7 +20,9 @@
     - hook.source is defined
   ansible.builtin.set_fact:
     crd_path: >-
-      {%- if hook.source is not ansible.builtin.abs -%}
+      {% if hook.source | regex_search('^https?.*     -%}
+      {{ hook.source }}
+      {%- elif hook.source is not ansible.builtin.abs -%}
       {{
         (
           ansible.builtin.role_path,
@@ -29,7 +31,7 @@
         ) | ansible.builtin.path_join | ansible.builtin.realpath
       }}
       {%- else -%}
-      {{ hook.source | ansible.builtin.realpath}}
+      {{ hook.source | ansible.builtin.realpath }}
       {%- endif -%}
 
 - name: "Manage the k8s object"
@@ -40,6 +42,7 @@
     name: "{{ hook.resource_name | default(omit) }}"
     src: "{{ crd_path | default(omit) }}"
     state: "{{ hook.state | default(present) }}"
+    namespace: "{{ hook.namespace | default(omit) }}"
     validate:
       fail_on_error: true
     wait: true
