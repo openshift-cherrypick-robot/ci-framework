@@ -292,13 +292,14 @@
     name: centos-9-medium-3x-centos-9-crc-extracted-2-36-0-3xl
     nodes:
       - name: controller
-        label: cloud-centos-9-stream-tripleo-medium
+        # DNM jgilaber force running in vexxhost
+        label: cloud-centos-9-stream-tripleo-vexxhost-medium
       - name: compute-0
-        label: cloud-centos-9-stream-tripleo
+        label: cloud-centos-9-stream-tripleo-vexxhost
       - name: compute-1
-        label: cloud-centos-9-stream-tripleo
+        label: cloud-centos-9-stream-tripleo-vexxhost
       - name: compute-2
-        label: cloud-centos-9-stream-tripleo
+        label: cloud-centos-9-stream-tripleo-vexxhost
       - name: crc
         label: coreos-crc-extracted-2-36-0-3xl
     groups:

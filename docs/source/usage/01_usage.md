@@ -67,6 +67,8 @@ are shared among multiple roles:
 - `cifmw_openshift_ingress_ip_address` (String) contains the OpenShift Ingress IP address. Note: it is computed internally and should not be user defined.
 - `cifmw_nolog`: (Bool) Toggle `no_log` value for selected tasks. Defaults to `true` (hiding those logs by default).
 - `cifmw_parent_scenario`: (String or List(String)) path to existing scenario/parameter file to inherit from.
+- `cifmw_controller_name`: (String) name of the controller node to use in the `06-deploy-architecture` playbook. Default is `controller-0`.
+- `cifmw_crc_default_network`: (String) name of the untagged network used to address DNS on the crc node. Default is `default`.
 
 ```{admonition} Words of caution
 :class: danger
