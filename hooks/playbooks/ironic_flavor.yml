@@ -7,6 +7,7 @@
     _flavor_name: baremetal
     _flavor_id: 123456789-1234-1234-1234-000000000001
     _boot_mode: uefi
+    _cpu_arch: x86_64
   environment:
     KUBECONFIG: "{{ cifmw_openshift_kubeconfig }}"
     PATH: "{{ cifmw_path }}"
@@ -21,6 +22,7 @@
             --ram 1024 \
             --vcpus 1 \
             --disk 15 \
+            --property cpu_arch="{{ _cpu_arch }}" \
             --property resources:VCPU=0 \
             --property resources:MEMORY_MB=0 \
             --property resources:DISK_GB=0 \
