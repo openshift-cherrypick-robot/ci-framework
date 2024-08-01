@@ -38,7 +38,7 @@ cifmw_ceph_spec_public_network: "{{ cifmw_networking_definition.networks.ctlplan
 #
 # cifmw_deploy_architecture_stopper:
 
-cifmw_allow_vms_to_reach_osp_api: true
+cifmw_libvirt_manager_allow_ocp_traffic: true
 cifmw_networking_mapper_definition_patches_01:
   networks:
     tenant:
